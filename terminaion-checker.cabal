@@ -1,0 +1,108 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.37.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           terminaion-checker
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/ksrky/terminaion-checker#readme>
+homepage:       https://github.com/ksrky/terminaion-checker#readme
+bug-reports:    https://github.com/ksrky/terminaion-checker/issues
+author:         Rikiya Kashiwagi
+maintainer:     kswgrky@gmail.com
+copyright:      Copyright (c) 2025 Rikiya Kashiwagi
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/ksrky/terminaion-checker
+
+library
+  exposed-modules:
+      Parser
+      Parser.Logic
+      Parser.Monad
+      Parser.OperatorParser
+      Parser.Types
+      Term
+  other-modules:
+      Paths_terminaion_checker
+  autogen-modules:
+      Paths_terminaion_checker
+  hs-source-dirs:
+      src
+  default-extensions:
+      FunctionalDependencies
+      ImportQualifiedPost
+      LambdaCase
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      array
+    , base >=4.7 && <5
+    , containers
+    , lens
+    , logict
+    , mtl
+    , template-haskell
+    , text
+    , transformers
+  default-language: GHC2021
+
+executable terminaion-checker-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_terminaion_checker
+  autogen-modules:
+      Paths_terminaion_checker
+  hs-source-dirs:
+      app
+  default-extensions:
+      FunctionalDependencies
+      ImportQualifiedPost
+      LambdaCase
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      array
+    , base >=4.7 && <5
+    , containers
+    , lens
+    , logict
+    , mtl
+    , template-haskell
+    , terminaion-checker
+    , text
+    , transformers
+  default-language: GHC2021
+
+test-suite terminaion-checker-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_terminaion_checker
+  autogen-modules:
+      Paths_terminaion_checker
+  hs-source-dirs:
+      test
+  default-extensions:
+      FunctionalDependencies
+      ImportQualifiedPost
+      LambdaCase
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      array
+    , base >=4.7 && <5
+    , containers
+    , lens
+    , logict
+    , mtl
+    , template-haskell
+    , terminaion-checker
+    , text
+    , transformers
+  default-language: GHC2021
