@@ -1,88 +1,10 @@
-mixfix 0 _(_).
+fib(0) = 1.
+fib(1) = 1.
+fib(n) = fib(n-1) + fib(n-2).
 
-_(_) : (* -> *) -> * -> *.
+ack(0, n) = 1.
+ack(m, 0) = ack(m-1, 1).
+ack(m, n) = ack(m-1, ack(m, n-1)).
 
-bot : *.
-
-infixr 1 ,
-
-_,_ : * -> * -> *.
-
-fst(x,y) = x.
-snd(x,y) = y.
-
-tt : *.
-ff : *.
-
-z : *.
-s : * -> *.
-
-0 = z.
-1 = s(z).
-
-pred(z) = z.
-pred(s(n)) = n.
-
-infixl 6 +.
-infixl 6 -.
-infixl 7 *.
-
-n + z = n.
-n + s.m = s(n + m).
-
-n - z = n.
-z - m = z.
-s(n) - s(m) = n - m.
-
-n * z = z.
-n * s(m) = n * m + n.
-
-infix 4 >.
-
-z > n = ff.
-s(m) > z = tt.
-s(m) > s(n) = m > n.
-
-mixfix 3 if_then_else_.
-
-if tt then e1 else e2 = e1.
-if ff then e1 else e2 = e2.
-
-fib(z) = s.z.
-fib(s(z)) = s.z.
-fib(s(s(n))) = fib(s(n)) + fib(n).
-
-ack(z,n) = s.n.
-ack(s(m),z) = ack(m,s(z)).
-ack(s(m),s(n)) = ack(m,ack(s(m),n)).
-
-gcd(n,z) = n.
-gcd(n,m) = if m > n then gcd(m,n) else gcd(n - m,m).
-
-infixr 5 ::
-
-nil : *.
-_::_ : * -> * -> *.
-
-length(nil) = 0.
-length(x :: xs) = length(xs) + 1.
-
-head(nil) = bot.
-head(x :: xs) = x.
-
-tail(nil) = nil.
-tail(_ :: xs) = xs
-
-isnil(nil) = tt.
-isnil(_ :: _) = ff.
-
-take(z,_) = nil.
-take(s(n),x :: xs) = x :: take n xs.
-
-infixr 5 ++.
-
-nil ++ ys = ys.
-(x :: xs) ++ ys = x :: (xs ++ ys).
-
-map(f,nil) = nil.
-map(f,x :: xs) = f(x) :: map(f,xs).
+gcd(n, 0) = n.
+gcd(n, m) = if m > n then gcd(m, n) else gcd(n-m, m).

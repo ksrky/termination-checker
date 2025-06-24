@@ -25,12 +25,9 @@ source-repository head
 
 library
   exposed-modules:
+      Lexer
       Parser
-      Parser.Logic
-      Parser.Monad
-      Parser.OperatorParser
-      Parser.Types
-      Term
+      Syntax
   other-modules:
       Paths_terminaion_checker
   autogen-modules:
