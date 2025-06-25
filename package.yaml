@@ -36,6 +36,7 @@ default-extensions:
 - FunctionalDependencies
 - ImportQualifiedPost
 - LambdaCase
+- ImportQualifiedPost
 
 ghc-options:
 - -Wall

@@ -47,7 +47,7 @@ Decs :: { [Dec] }
     | Decs Dec                              { $2 : $1 }
 
 Dec :: { Dec }
-    : ident '(' Params ')' '=' Exp '.'      { Dec $1 ($6 $3) }
+    : ident '(' Params ')' '=' Exp '.'      { Dec $1 (length $3) ($6 $3) }
 
 Params :: { [Ident] }
     : {- empty -}                           { [] }

@@ -1,14 +1,16 @@
 module Syntax
-    ( Ident
+    ( Idx
+    , Ident
     , Exp (..)
     , Dec (..)
     , Params
     ) where
 
+type Idx = Int
 type Ident  = String
 
 data Exp
-    = Var Int
+    = Var Idx
     | Int Int
     | Call Ident [Exp]
     | Add Exp Exp
@@ -22,8 +24,11 @@ data Exp
     | Ite Exp Exp Exp
     deriving (Eq, Show)
 
-data Dec
-    = Dec Ident Exp
+data Dec = Dec
+    { name  :: Ident
+    , arity :: Int
+    , value :: Exp
+    }
     deriving (Eq, Show)
 
 type Params = [Ident]

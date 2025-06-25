@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Graph
       Lexer
       Parser
       Syntax
@@ -38,6 +39,7 @@ library
       FunctionalDependencies
       ImportQualifiedPost
       LambdaCase
+      ImportQualifiedPost
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       array
@@ -63,6 +65,7 @@ executable terminaion-checker-exe
       FunctionalDependencies
       ImportQualifiedPost
       LambdaCase
+      ImportQualifiedPost
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       array
@@ -90,6 +93,7 @@ test-suite terminaion-checker-test
       FunctionalDependencies
       ImportQualifiedPost
       LambdaCase
+      ImportQualifiedPost
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       array
