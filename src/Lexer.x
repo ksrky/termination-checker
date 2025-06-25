@@ -24,7 +24,7 @@ $white+                     ;
 \(                          { \_ -> Tlparen }
 \)                          { \_ -> Trparen }
 \=\=                        { \_ -> Teq }
-\<\=                        { \_ -> Tle }
+\>                          { \_ -> Tgt }
 \~                          { \_ -> Tnot }
 \&\&                        { \_ -> Tand }
 \|\|                        { \_ -> Tor }
@@ -45,7 +45,7 @@ data Token
     | Tlparen
     | Trparen
     | Teq
-    | Tle
+    | Tgt
     | Tnot
     | Tand
     | Tor

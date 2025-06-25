@@ -21,7 +21,7 @@ import Syntax
 '||'            { Tor }
 '~'             { Tnot }
 '=='            { Teq }
-'<='            { Tle }
+'>'             { Tgt }
 'if'            { Tif }
 'then'          { Tthen }
 'else'          { Telse }
@@ -68,7 +68,7 @@ Exp :: { Params -> Exp }
     | Exp '||' Exp                          { \p -> Or ($1 p) ($3 p) }
     | '~' Exp   %prec NOT                   { \p -> Not ($2 p) }
     | Exp '==' Exp                          { \p -> Eq ($1 p) ($3 p) }
-    | Exp '<=' Exp                          { \p -> Le ($1 p) ($3 p) }
+    | Exp '>' Exp                           { \p -> Gt ($1 p) ($3 p) }
     | 'if' Exp 'then' Exp 'else' Exp        { \p -> Ite ($2 p) ($4 p) ($6 p) }
     | '(' Exp ')'                           { $2 }
 

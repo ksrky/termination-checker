@@ -18,7 +18,7 @@ data Exp
     | Or Exp Exp
     | Not Exp
     | Eq Exp Exp
-    | Le Exp Exp
+    | Gt Exp Exp
     | Ite Exp Exp Exp
     deriving (Eq, Show)
 
