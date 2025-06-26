@@ -61,14 +61,14 @@ Exp :: { Params -> Exp }
     : ident                                 { \p -> Var (params $1 p) }
     | num                                   { \_ -> Int $1 }
     | ident '(' Args ')'                    { \p -> Call $1 ($3 p) }
-    | Exp '+' Exp                           { \p -> Add ($1 p) ($3 p) }
-    | Exp '-' Exp                           { \p -> Sub ($1 p) ($3 p) }
-    | Exp '*' Exp                           { \p -> Mul ($1 p) ($3 p) }
-    | Exp '&&' Exp                          { \p -> And ($1 p) ($3 p) }
-    | Exp '||' Exp                          { \p -> Or ($1 p) ($3 p) }
-    | '~' Exp   %prec NOT                   { \p -> Not ($2 p) }
-    | Exp '==' Exp                          { \p -> Eq ($1 p) ($3 p) }
-    | Exp '>' Exp                           { \p -> Gt ($1 p) ($3 p) }
+    | Exp '+' Exp                           { \p -> PrimOp AddOp [$1 p, $3 p] }
+    | Exp '-' Exp                           { \p -> PrimOp SubOp [$1 p, $3 p] }
+    | Exp '*' Exp                           { \p -> PrimOp MulOp [$1 p, $3 p] }
+    | Exp '&&' Exp                          { \p -> PrimOp AndOp [$1 p, $3 p] }
+    | Exp '||' Exp                          { \p -> PrimOp OrOp [$1 p, $3 p] }
+    | '~' Exp   %prec NOT                   { \p -> PrimOp NotOp [$2 p] }
+    | Exp '==' Exp                          { \p -> PrimOp EqOp [$1 p, $3 p] }
+    | Exp '>' Exp                           { \p -> PrimOp GtOp [$1 p, $3 p] }
     | 'if' Exp 'then' Exp 'else' Exp        { \p -> Ite ($2 p) ($4 p) ($6 p) }
     | '(' Exp ')'                           { $2 }
 

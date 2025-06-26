@@ -1,6 +1,7 @@
 module Syntax
     ( Idx
     , Ident
+    , PrimOp (..)
     , Exp (..)
     , Dec (..)
     , Params
@@ -9,18 +10,22 @@ module Syntax
 type Idx = Int
 type Ident  = String
 
+data PrimOp
+    = AddOp
+    | SubOp
+    | MulOp
+    | AndOp
+    | OrOp
+    | NotOp
+    | EqOp
+    | GtOp
+    deriving (Eq, Show)
+
 data Exp
     = Var Idx
     | Int Int
     | Call Ident [Exp]
-    | Add Exp Exp
-    | Sub Exp Exp
-    | Mul Exp Exp
-    | And Exp Exp
-    | Or Exp Exp
-    | Not Exp
-    | Eq Exp Exp
-    | Gt Exp Exp
+    | PrimOp PrimOp [Exp]
     | Ite Exp Exp Exp
     deriving (Eq, Show)
 
