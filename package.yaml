@@ -28,6 +28,7 @@ dependencies:
 - lens
 - logict
 - mtl
+- sbv
 - template-haskell
 - text
 - transformers

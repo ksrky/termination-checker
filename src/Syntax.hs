@@ -23,7 +23,7 @@ data PrimOp
 
 data Exp
     = Var Idx
-    | Int Int
+    | Int Integer
     | Call Ident [Exp]
     | PrimOp PrimOp [Exp]
     | Ite Exp Exp Exp
