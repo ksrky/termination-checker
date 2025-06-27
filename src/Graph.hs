@@ -26,5 +26,5 @@ data Arc = Arc
 data SCGraph = SCGraph
     { scSource :: Sig
     , scTarget :: Sig
-    , scArcs  :: [Arc]
+    , scArcs   :: [Arc]
     }

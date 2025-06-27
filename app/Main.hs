@@ -1,10 +1,12 @@
 module Main (main) where
 
-import Lexer
-import Parser
+import           GraphGen
+import           Lexer
+import           Parser
 
 main :: IO ()
 main = do
     s <- getContents
     let ds = parse (alexScanTokens s)
-    print ds
+    gs <- mapM mkSCGraphs ds
+    print $ length gs

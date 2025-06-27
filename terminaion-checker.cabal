@@ -29,6 +29,8 @@ library
       GraphGen
       Lexer
       Parser
+      SMT.Syntax
+      SMT.ToSymbolic
       Syntax
   other-modules:
       Paths_terminaion_checker

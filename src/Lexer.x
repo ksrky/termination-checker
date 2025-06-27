@@ -55,6 +55,6 @@ data Token
     | Tcomma
     | Tdot
     | Ident String
-    | Number Int
+    | Number Integer
     deriving (Eq, Show)
 }
