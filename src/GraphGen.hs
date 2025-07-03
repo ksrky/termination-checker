@@ -29,7 +29,7 @@ withCondition :: SMT.BExp -> SCM a -> SCM a
 withCondition c = local $ \s -> s { scConditions = c : scConditions s }
 
 toAVar :: Idx -> SMT.AExp
-toAVar i = SMT.AVar ("x" ++ show i)
+toAVar i = SMT.AVar ("#" ++ show i)
 
 toAExp :: Exp -> Maybe SMT.AExp
 toAExp (Var x) = Just $ toAVar x
@@ -92,9 +92,10 @@ buildSCGraphs (Ite e1 e2 e3) = do
         Nothing -> do
             buildSCGraphs e2
             buildSCGraphs e3
-        Just b -> withCondition b $ do
+        Just b -> withCondition (SMT.bnot b) $ do
             buildSCGraphs e2
             buildSCGraphs e3
+buildSCGraphs Error = return ()
 
 mkSCGraphs :: Dec -> IO SCGraphSet
 mkSCGraphs (Dec name arity value) = do

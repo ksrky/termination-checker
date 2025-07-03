@@ -56,10 +56,13 @@ instance ToSymbolic BExp Bool where
             BLt -> v1 .< v2
             BLe -> v1 .<= v2
 
+nonNegative :: SymVars -> [SBool]
+nonNegative = map (\(_, v) -> v .>= 0)
+
 proveWithAssump :: [BExp] -> BExp -> IO Bool
 proveWithAssump assumptions goal = do
     isSat <- isSatisfiable $ do
         (constrs, vars) <- runSymM [] $ mapM toSymbolic assumptions
         (sgoal, _) <- runSymM vars $ toSymbolic (bnot goal)
-        return $ sAnd (sgoal : constrs)
+        return $ sAnd (sgoal : constrs ++ nonNegative vars)
     return $ not isSat

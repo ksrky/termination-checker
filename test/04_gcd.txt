@@ -1,0 +1,4 @@
+gcd(m, n) =
+    if n == 0 then m
+    else if n > m then gcd(n, m)
+    else gcd(m-n, n).

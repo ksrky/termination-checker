@@ -31,6 +31,7 @@ $white+                     ;
 if                          { \_ -> Tif }
 then                        { \_ -> Tthen }
 else                        { \_ -> Telse }
+error                       { \_ -> Terror }
 \,                          { \_ -> Tcomma }
 \.                          { \_ -> Tdot }
 @ident                      { Ident }
@@ -52,6 +53,7 @@ data Token
     | Tif
     | Tthen
     | Telse
+    | Terror
     | Tcomma
     | Tdot
     | Ident String

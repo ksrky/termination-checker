@@ -1,0 +1,3 @@
+iseven(n) = if n == 0 then 1 else isodd(n-1).
+
+isodd(n) = if n == 0 then 0 else iseven(n-1).

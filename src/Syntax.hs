@@ -27,6 +27,7 @@ data Exp
     | Call Ident [Exp]
     | PrimOp PrimOp [Exp]
     | Ite Exp Exp Exp
+    | Error
     deriving (Eq, Show)
 
 data Dec = Dec

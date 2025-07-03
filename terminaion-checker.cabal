@@ -105,6 +105,7 @@ test-suite terminaion-checker-test
       array
     , base >=4.7 && <5
     , containers
+    , hspec
     , lens
     , logict
     , mtl

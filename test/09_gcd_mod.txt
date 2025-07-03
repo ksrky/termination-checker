@@ -1,0 +1,8 @@
+mod(m, n) =
+    if n == 0 then error
+    else if n > m then m
+    else mod(m-n, n).
+
+gcd_mod(m, n) =
+    if n == 0 then m
+    else gcd_mod(n, mod(m, n)).

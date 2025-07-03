@@ -25,6 +25,7 @@ import Syntax
 'if'            { Tif }
 'then'          { Tthen }
 'else'          { Telse }
+'error'         { Terror }
 ','             { Tcomma }
 '.'             { Tdot }
 
@@ -60,6 +61,7 @@ Params1 :: { [Ident] }
 Exp :: { Params -> Exp }
     : ident                                 { \p -> Var (params $1 p) }
     | num                                   { \_ -> Int $1 }
+    | 'error'                               { \_ -> Error }
     | ident '(' Args ')'                    { \p -> Call $1 ($3 p) }
     | Exp '+' Exp                           { \p -> PrimOp AddOp [$1 p, $3 p] }
     | Exp '-' Exp                           { \p -> PrimOp SubOp [$1 p, $3 p] }

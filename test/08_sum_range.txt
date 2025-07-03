@@ -1,0 +1,4 @@
+sum_range(lo, hi) =
+    if lo > hi
+    then lo
+    else lo + sum_range(lo + 1, hi).
