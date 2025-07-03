@@ -1,4 +1,4 @@
-module Graph
+module SCGraph
     ( Sig (..)
     , ArcType (..)
     , Arc (..)

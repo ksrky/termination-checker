@@ -1,7 +1,7 @@
 module SCT (checkTermination) where
 
 import Data.Maybe
-import Graph
+import SCGraph
 import Data.Set qualified as S
 
 composeSetWith :: Ord a => (a -> a -> Maybe a) -> S.Set a -> S.Set a -> S.Set a

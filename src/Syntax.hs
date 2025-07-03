@@ -4,7 +4,6 @@ module Syntax
     , PrimOp (..)
     , Exp (..)
     , Dec (..)
-    , Params
     ) where
 
 type Idx = Int
@@ -36,5 +35,3 @@ data Dec = Dec
     , value :: Exp
     }
     deriving (Eq, Show)
-
-type Params = [Ident]

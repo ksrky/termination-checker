@@ -1,15 +1,15 @@
 {-# LANGUAGE ImpredicativeTypes #-}
 
-module GraphGen (mkSCGraphs) where
+module FlowAnalysis (mkSCGraphs) where
 
-import           Control.Monad
-import           Control.Monad.Reader
-import           Control.Monad.State
-import           Graph
-import qualified SMT.Syntax           as SMT
-import           SMT.ToSymbolic
-import           Syntax
-import qualified Data.Set as S
+import Control.Monad
+import Control.Monad.Reader
+import Control.Monad.State
+import SCGraph
+import SMT.Syntax qualified as SMT
+import SMT.ToSymbolic
+import Syntax
+import Data.Set qualified as S
 import Data.Maybe
 
 data SCContext = SCContext
@@ -67,10 +67,10 @@ mkArc :: Idx -> Idx -> Exp -> SCM (Maybe Arc)
 mkArc i j e | Just a <- toAExp e = do
     conds <- asks scConditions
     lift $ lift $ do
-        isStrict <- proveWithAssump conds (SMT.Bop (toAVar i) SMT.BGt a)
+        isStrict <- conds ==>? SMT.Bop (toAVar i) SMT.BGt a
         if isStrict then return $ Just $ Arc{arcFrom = i, arcTo = j, arcType = Strict}
         else do
-            isNonStrict <- proveWithAssump conds (SMT.Bop (toAVar i) SMT.BGe a)
+            isNonStrict <- conds ==>? SMT.Bop (toAVar i) SMT.BGe a
             return $ if isNonStrict then Just $ Arc{arcFrom = i, arcTo = j, arcType = NonStrict}
             else Nothing
 mkArc _ _ _ = return Nothing

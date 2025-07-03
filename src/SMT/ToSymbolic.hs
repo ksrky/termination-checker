@@ -1,16 +1,16 @@
 module SMT.ToSymbolic
-    ( proveWithAssump
+    ( (==>?)
     ) where
 
-import           Control.Monad.State
-import           Data.SBV
-import           SMT.Syntax
+import Control.Monad.State
+import Data.SBV
+import SMT.Syntax
 
-type SymVars = [(String, SInteger)]
+type SymbolTable = [(String, SInteger)]
 
-type SymM = StateT SymVars Symbolic
+type SymM = StateT SymbolTable Symbolic
 
-runSymM :: SymVars -> SymM a -> Symbolic (a, SymVars)
+runSymM :: SymbolTable -> SymM a -> Symbolic (a, SymbolTable)
 runSymM vars action = runStateT action vars
 
 class ToSymbolic a b where
@@ -56,13 +56,15 @@ instance ToSymbolic BExp Bool where
             BLt -> v1 .< v2
             BLe -> v1 .<= v2
 
-nonNegative :: SymVars -> [SBool]
+nonNegative :: SymbolTable -> [SBool]
 nonNegative = map (\(_, v) -> v .>= 0)
 
-proveWithAssump :: [BExp] -> BExp -> IO Bool
-proveWithAssump assumptions goal = do
+(==>?)  :: [BExp] -> BExp -> IO Bool
+(==>?)  assumptions goal = do
     isSat <- isSatisfiable $ do
         (constrs, vars) <- runSymM [] $ mapM toSymbolic assumptions
         (sgoal, _) <- runSymM vars $ toSymbolic (bnot goal)
         return $ sAnd (sgoal : constrs ++ nonNegative vars)
     return $ not isSat
+
+infix 9 ==>?

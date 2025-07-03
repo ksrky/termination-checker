@@ -25,10 +25,10 @@ source-repository head
 
 library
   exposed-modules:
-      Graph
-      GraphGen
+      FlowAnalysis
       Lexer
       Parser
+      SCGraph
       SCT
       SMT.Syntax
       SMT.ToSymbolic

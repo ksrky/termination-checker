@@ -58,7 +58,7 @@ Params1 :: { [Ident] }
     : ident                                 { [$1] }
     | Params ',' ident                      { $3 : $1 }
 
-Exp :: { Params -> Exp }
+Exp :: { [Ident] -> Exp }
     : ident                                 { \p -> Var (params $1 p) }
     | num                                   { \_ -> Int $1 }
     | 'error'                               { \_ -> Error }
@@ -74,11 +74,11 @@ Exp :: { Params -> Exp }
     | 'if' Exp 'then' Exp 'else' Exp        { \p -> Ite ($2 p) ($4 p) ($6 p) }
     | '(' Exp ')'                           { $2 }
 
-Args :: { Params -> [Exp] }
+Args :: { [Ident] -> [Exp] }
     : {- empty -}                           { \_ -> [] }
     | Args1                                 { \p -> reverse ($1 p) }
 
-Args1 :: { Params -> [Exp] }
+Args1 :: { [Ident] -> [Exp] }
     : Exp                                   { \p -> [$1 p] }
     | Args ',' Exp                          { \p -> $3 p : $1 p }
 
@@ -86,7 +86,7 @@ Args1 :: { Params -> [Exp] }
 parseError :: [Token] -> a
 parseError ts = error $ "Parse error: " ++ show ts
 
-params :: Ident -> Params -> Int
+params :: Ident -> [Ident] -> Int
 params y [] = error $ "Scope error: " ++ show y
 params y (x : xs) = if x == y then 0 else params y xs + 1
 }

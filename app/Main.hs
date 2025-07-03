@@ -1,8 +1,8 @@
 module Main (main) where
 
 import Data.Set qualified as S
-import Graph
-import GraphGen
+import SCGraph
+import FlowAnalysis
 import Lexer
 import Parser
 import SCT
