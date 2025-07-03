@@ -23,5 +23,5 @@ gcd(m, n) =
     else if n > m then gcd(n, m)
     else gcd(m-n, n).
 
--- 1st arg at gcd(m,n) : ∀m n. ¬(n == 0) ∧ n > m => gcd(n, m)
--- 2nd arg at gcd(m,n) : ∀m n. ¬(n == 0) ∧ ¬(n > m) => gcd(m-n, n)
+-- 1st arg at gcd(n,m) : ∀m n. ¬(n == 0) ∧ n > m => gcd(n, m)
+-- 2nd arg at gcd(m-n,n) : ∀m n. ¬(n == 0) ∧ ¬(n > m) => gcd(m-n, n)

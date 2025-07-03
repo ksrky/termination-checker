@@ -1,12 +1,16 @@
 module Main (main) where
 
-import           GraphGen
-import           Lexer
-import           Parser
+import Data.Set qualified as S
+import Graph
+import GraphGen
+import Lexer
+import Parser
+import SCT
 
 main :: IO ()
 main = do
     s <- getContents
-    let ds = parse (alexScanTokens s)
-    gs <- mapM mkSCGraphs ds
-    print $ length gs
+    let decs = parse (alexScanTokens s)
+    scgset <- S.unions <$> mapM mkSCGraphs decs
+    let fns = checkTermination scgset
+    print $ map sigName fns 

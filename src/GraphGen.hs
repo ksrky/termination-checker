@@ -9,67 +9,24 @@ import           Graph
 import qualified SMT.Syntax           as SMT
 import           SMT.ToSymbolic
 import           Syntax
+import qualified Data.Set as S
+import Data.Maybe
 
 data SCContext = SCContext
     { scCallee     :: Sig
     , scConditions :: [SMT.BExp]
     }
 
-newtype SCState = SCState
-    { scGraphs :: [SCGraph]
-    }
-
-type SCM = ReaderT SCContext (StateT SCState IO)
+type SCM = ReaderT SCContext (StateT SCGraphSet IO)
 
 runSCM :: SCContext -> SCM a -> IO a
-runSCM ctx action = evalStateT (runReaderT action ctx) initialState
-  where
-    initialState = SCState { scGraphs = [] }
+runSCM ctx action = evalStateT (runReaderT action ctx) S.empty
 
 addGraph :: SCGraph -> SCM ()
-addGraph g = modify $ \s -> s { scGraphs = g : scGraphs s }
+addGraph = modify . S.insert
 
 withCondition :: SMT.BExp -> SCM a -> SCM a
 withCondition c = local $ \s -> s { scConditions = c : scConditions s }
-
-mkArc :: Idx -> Idx -> Exp -> SCM [Arc]
-mkArc i j e | Just a <- toAExp e = do
-    conds <- asks scConditions
-    lift $ lift $ do
-        isStrict <- proveWithAssump conds (SMT.Bop (toAVar i) SMT.BGt a)
-        isNonStrict <- proveWithAssump conds (SMT.Bop (toAVar i) SMT.BGe a)
-        return $ if isStrict then [Arc Strict i j]
-            else [Arc NonStrict i j | isNonStrict]
-mkArc _ _ _ = return []
-
-buildSCGraphs :: Exp -> SCM ()
-buildSCGraphs (Var _) = return ()
-buildSCGraphs (Int _) = return ()
-buildSCGraphs (PrimOp _ args) = mapM_ buildSCGraphs args
-buildSCGraphs (Call fn args) = do
-    sig@Sig{sigArity} <- asks scCallee
-    let caller = Sig{sigName = fn, sigArity = length args}
-    arcsss <- forM [1..sigArity] $ \i ->
-            zipWithM (mkArc i) [1..sigArity] args
-    addGraph $ SCGraph{scSource = sig, scTarget = caller, scArcs = concat (concat arcsss)}
-    mapM_ buildSCGraphs args
-buildSCGraphs (Ite e1 e2 e3) = do
-    buildSCGraphs e1
-    case toBExp e1 of
-        Nothing -> do
-            buildSCGraphs e2
-            buildSCGraphs e3
-        Just b -> withCondition b $ do
-            buildSCGraphs e2
-            buildSCGraphs e3
-
-mkSCGraphs :: Dec -> IO [SCGraph]
-mkSCGraphs (Dec name arity value) = do
-    let sig = Sig { sigName = name, sigArity = arity }
-        ctx = SCContext { scCallee = sig, scConditions = [] }
-    runSCM ctx $ do
-        buildSCGraphs value
-        gets scGraphs
 
 toAVar :: Idx -> SMT.AExp
 toAVar i = SMT.AVar ("x" ++ show i)
@@ -105,3 +62,44 @@ toBExp (PrimOp NotOp [e]) = do
     b <- toBExp e
     Just $ SMT.BNot b
 toBExp _ = Nothing
+
+mkArc :: Idx -> Idx -> Exp -> SCM (Maybe Arc)
+mkArc i j e | Just a <- toAExp e = do
+    conds <- asks scConditions
+    lift $ lift $ do
+        isStrict <- proveWithAssump conds (SMT.Bop (toAVar i) SMT.BGt a)
+        if isStrict then return $ Just $ Arc{arcFrom = i, arcTo = j, arcType = Strict}
+        else do
+            isNonStrict <- proveWithAssump conds (SMT.Bop (toAVar i) SMT.BGe a)
+            return $ if isNonStrict then Just $ Arc{arcFrom = i, arcTo = j, arcType = NonStrict}
+            else Nothing
+mkArc _ _ _ = return Nothing
+
+buildSCGraphs :: Exp -> SCM ()
+buildSCGraphs (Var _) = return ()
+buildSCGraphs (Int _) = return ()
+buildSCGraphs (PrimOp _ args) = mapM_ buildSCGraphs args
+buildSCGraphs (Call fn args) = do
+    sig@Sig{sigArity} <- asks scCallee
+    let caller = Sig{sigName = fn, sigArity = length args}
+    arcsss <- forM [0..sigArity-1] $ \i ->
+            catMaybes <$> zipWithM (mkArc i) [0..sigArity-1] args
+    addGraph $ SCGraph{scSource = sig, scTarget = caller, scArcs = S.fromList (concat arcsss)}
+    mapM_ buildSCGraphs args
+buildSCGraphs (Ite e1 e2 e3) = do
+    buildSCGraphs e1
+    case toBExp e1 of
+        Nothing -> do
+            buildSCGraphs e2
+            buildSCGraphs e3
+        Just b -> withCondition b $ do
+            buildSCGraphs e2
+            buildSCGraphs e3
+
+mkSCGraphs :: Dec -> IO SCGraphSet
+mkSCGraphs (Dec name arity value) = do
+    let sig = Sig { sigName = name, sigArity = arity }
+        ctx = SCContext { scCallee = sig, scConditions = [] }
+    runSCM ctx $ do
+        buildSCGraphs value
+        get

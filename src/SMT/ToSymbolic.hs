@@ -58,7 +58,8 @@ instance ToSymbolic BExp Bool where
 
 proveWithAssump :: [BExp] -> BExp -> IO Bool
 proveWithAssump assumptions goal = do
-    isSatisfiable  $ do
-        (constrs, vars) <- runSymM [] $ mapM (toSymbolic . bnot) assumptions
-        (sgoal, _) <-  runSymM vars $ toSymbolic goal
-        return $ sAnd constrs .|| sgoal
+    isSat <- isSatisfiable $ do
+        (constrs, vars) <- runSymM [] $ mapM toSymbolic assumptions
+        (sgoal, _) <- runSymM vars $ toSymbolic (bnot goal)
+        return $ sAnd (sgoal : constrs)
+    return $ not isSat

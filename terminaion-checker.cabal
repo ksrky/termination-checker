@@ -29,6 +29,7 @@ library
       GraphGen
       Lexer
       Parser
+      SCT
       SMT.Syntax
       SMT.ToSymbolic
       Syntax

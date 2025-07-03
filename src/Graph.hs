@@ -2,29 +2,41 @@ module Graph
     ( Sig (..)
     , ArcType (..)
     , Arc (..)
+    , ArcSet
     , SCGraph (..)
+    , SCGraphSet
     ) where
 
-import           Syntax
+import Syntax
+import Data.Set qualified as S
 
 data Sig = Sig
     { sigName  :: String
     , sigArity :: Int
     }
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
 
 data ArcType = Strict | NonStrict
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
+
+instance Semigroup ArcType where
+    Strict <> _ = Strict
+    NonStrict <> typ = typ
 
 data Arc = Arc
-    { arcType :: ArcType
-    , arcFrom :: Idx
+    { arcFrom :: Idx
     , arcTo   :: Idx
+    , arcType :: ArcType
     }
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
+
+type ArcSet = S.Set Arc
 
 data SCGraph = SCGraph
     { scSource :: Sig
     , scTarget :: Sig
-    , scArcs   :: [Arc]
+    , scArcs   :: ArcSet
     }
+    deriving (Eq, Ord, Show)
+
+type SCGraphSet = S.Set SCGraph
