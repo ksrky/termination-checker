@@ -1,8 +1,8 @@
 module SCT (checkTermination) where
 
 import Data.Maybe
+import Data.Set   qualified as S
 import SCGraph
-import Data.Set qualified as S
 
 composeSetWith :: Ord a => (a -> a -> Maybe a) -> S.Set a -> S.Set a -> S.Set a
 composeSetWith f xs ys =
@@ -35,7 +35,7 @@ calcClosure scgs = go scgs scgs
         = known
         | let fromLeft = composeSetWith composeGraph worklist known
         , let fromRight = composeSetWith composeGraph known worklist
-        , let newGraphs = (fromLeft `S.union` fromRight) `S.difference` known 
+        , let newGraphs = (fromLeft `S.union` fromRight) `S.difference` known
         = go (known `S.union` newGraphs) newGraphs
 
 isIdempotent :: SCGraph -> Bool
@@ -45,7 +45,7 @@ hasStrictIdArc :: SCGraph -> Bool
 hasStrictIdArc (SCGraph f g arcs) = sigName f == sigName g && any isStrictIdentity (S.toList arcs)
   where
     isStrictIdentity (Arc i j Strict) = i == j
-    isStrictIdentity _ = False
+    isStrictIdentity _                = False
 
 checkTermination :: SCGraphSet -> [Sig]
 checkTermination scgs = foldr (\g@SCGraph{scSource} acc ->

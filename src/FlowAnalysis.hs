@@ -5,12 +5,12 @@ module FlowAnalysis (mkSCGraphs) where
 import Control.Monad
 import Control.Monad.Reader
 import Control.Monad.State
+import Data.Maybe
+import Data.Set             qualified as S
 import SCGraph
-import SMT.Syntax qualified as SMT
+import SMT.Syntax           qualified as SMT
 import SMT.ToSymbolic
 import Syntax
-import Data.Set qualified as S
-import Data.Maybe
 
 data SCContext = SCContext
     { scCallee     :: Sig

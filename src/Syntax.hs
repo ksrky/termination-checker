@@ -7,7 +7,7 @@ module Syntax
     ) where
 
 type Idx = Int
-type Ident  = String
+type Ident = String
 
 data PrimOp
     = AddOp

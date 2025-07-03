@@ -7,8 +7,8 @@ module SCGraph
     , SCGraphSet
     ) where
 
-import Syntax
 import Data.Set qualified as S
+import Syntax
 
 data Sig = Sig
     { sigName  :: String
@@ -20,7 +20,7 @@ data ArcType = Strict | NonStrict
     deriving (Eq, Ord, Show)
 
 instance Semigroup ArcType where
-    Strict <> _ = Strict
+    Strict <> _      = Strict
     NonStrict <> typ = typ
 
 data Arc = Arc

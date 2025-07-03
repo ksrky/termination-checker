@@ -1,10 +1,10 @@
 module Main (main) where
 
 import Data.Set qualified as S
-import SCGraph
 import FlowAnalysis
 import Lexer
 import Parser
+import SCGraph
 import SCT
 
 main :: IO ()
