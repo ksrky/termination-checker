@@ -1,1 +1,1 @@
-# terminaion-checker
+# termination-checker

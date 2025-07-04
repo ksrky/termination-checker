@@ -1,4 +1,4 @@
-# Changelog for `terminaion-checker`
+# Changelog for `termination-checker`
 
 All notable changes to this project will be documented in this file.
 
