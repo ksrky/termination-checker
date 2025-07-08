@@ -49,13 +49,8 @@ library
       array
     , base >=4.7 && <5
     , containers
-    , lens
-    , logict
     , mtl
     , sbv
-    , template-haskell
-    , text
-    , transformers
   default-language: GHC2021
 
 executable termination-checker-exe
@@ -76,14 +71,9 @@ executable termination-checker-exe
       array
     , base >=4.7 && <5
     , containers
-    , lens
-    , logict
     , mtl
     , sbv
-    , template-haskell
     , termination-checker
-    , text
-    , transformers
   default-language: GHC2021
 
 test-suite termination-checker-test
@@ -106,12 +96,7 @@ test-suite termination-checker-test
     , base >=4.7 && <5
     , containers
     , hspec
-    , lens
-    , logict
     , mtl
     , sbv
-    , template-haskell
     , termination-checker
-    , text
-    , transformers
   default-language: GHC2021
