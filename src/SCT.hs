@@ -47,8 +47,9 @@ hasStrictIdArc (SCGraph f g arcs) = sigName f == sigName g && any isStrictIdenti
     isStrictIdentity (Arc i j Strict) = i == j
     isStrictIdentity _                = False
 
+-- return nonterminating functions
 checkTermination :: SCGraphSet -> [Sig]
 checkTermination scgs = foldr (\g@SCGraph{scSource} acc ->
-    if scSource `notElem` acc && hasStrictIdArc g then scSource : acc else acc) [] cands
+    if scSource `notElem` acc && not (hasStrictIdArc g) then scSource : acc else acc) [] cands
   where
     cands = S.filter isIdempotent $ calcClosure scgs
